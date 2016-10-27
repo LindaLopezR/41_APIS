@@ -17,6 +17,9 @@ header{
 	padding: 1%;
 	width: 17%;
 }
+.fnd-3{
+	background-color: pink;
+}
 .bloque{
 	display: block;
 	margin-bottom: 2%;

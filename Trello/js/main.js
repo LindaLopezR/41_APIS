@@ -44,6 +44,7 @@ function guardar(){
 		var btnTarjeta = document.createElement('button');
 		var divTarjeta = document.createElement('div');
 		var textoTarjeta = document.createElement('textarea');
+
 		textoTarjeta.className = 'tamano3';
 		divGuardar.replaceChild(textoTarjeta,contenidoTarjeta);
 		divGuardar.appendChild(textoTarjeta);
@@ -58,8 +59,34 @@ function guardar(){
 			var tareas = document.createElement('div');
 			var contenidoTexto = document.createElement('p');
 			var insertedElement = divGuardar.insertBefore(tareas, textoTarjeta); //Para insertar elementos antes de textoTarjeta
+			
+			tareas.setAttribute('draggable', 'true');
+
+			function DragDrop(tareas,drop){
+				var drop = document.getElementById(drop);
+				var drag = document.getElementById(drag);
+
+				drag.ondragstart = function(e){
+					e.dataTransfer.setData('contenido', e.target.id);
+				}
+				drop.ondragover = function(e){
+					e.preventDefault();
+				}
+				drop.ondrop = function(e){
+					var id = e.dataTransfer.getData('contenido');
+					e.target.appendChild(document.getElementById(id));
+				}
+			}
+			window.onload = function(){
+				DragDrop('tareas','divGuardar');
+			}
+
+
+			
+			tareas.className = 'fnd-3';
 			contenidoTexto.innerHTML = textoTarjeta.value;
 			tareas.appendChild(contenidoTexto);
+		
 			textoTarjeta.value = '';
 		}
 	}
