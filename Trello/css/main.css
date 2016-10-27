@@ -1,0 +1,52 @@
+*{
+	font-family: 'Abhaya Libre', serif;
+}
+body{
+	background-color: #3399FF;
+}
+header{
+	background-color: #032A50;
+	color: white;
+}
+.fnd-1{
+	background-color: #0D64BA;
+	margin: 0.2%;
+}
+.fnd-2 {
+	background-color: #73B9FE;
+	padding: 1%;
+	width: 17%;
+}
+.bloque{
+	display: block;
+	margin-bottom: 2%;
+}
+.m-b{
+	margin-bottom: 3%;
+}
+.mar-3{
+	margin-top: 2%;
+}
+@media (min-width: 1200px) {
+	
+}
+
+@media (max-width: 1199px) and (min-width: 992px) {
+	
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+	
+}
+
+@media (max-width: 767px) {
+	.tamano1{
+		width: 110%;
+	}
+	.tamano2{
+		width: 100%;
+	}
+	.tamano3{
+		width: 105%;
+	}
+}
