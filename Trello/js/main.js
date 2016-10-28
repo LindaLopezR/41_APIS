@@ -1,6 +1,7 @@
 var inicio = document.getElementById('inicio');
 var lista = document.getElementById('lista');
 var btnPrincipal = document.getElementById('btnPrincipal');
+var tar = 0;
 // VARIABLES CREADAS
 var divLista = document.createElement('div');
 var tituloLista = document.createElement('input');
@@ -23,6 +24,7 @@ function desplegar(){
 	tache.onclick = function cierre(){
 		inicio.replaceChild(btnPrincipal, divLista);
 	}
+	tituloLista.focus();
 }
 function guardar(){
 	if(tituloLista.value === ''){
@@ -44,13 +46,14 @@ function guardar(){
 		var btnTarjeta = document.createElement('button');
 		var divTarjeta = document.createElement('div');
 		var textoTarjeta = document.createElement('textarea');
-
+		divGuardar.setAttribute('id', 'drop');
 		textoTarjeta.className = 'tamano3';
 		divGuardar.replaceChild(textoTarjeta,contenidoTarjeta);
 		divGuardar.appendChild(textoTarjeta);
 		divGuardar.appendChild(btnTarjeta);
 		btnTarjeta.setAttribute('class','btn btn-primary btn-xs');
 		btnTarjeta.appendChild(document.createTextNode('Aceptar'));
+		textoTarjeta.focus();
 		btnTarjeta.onclick = function guardarTarjeta(){
 			if(textoTarjeta.value === ''){
 				textoTarjeta.setAttribute('placeholder', 'Escribe tu texto aquí');
@@ -59,35 +62,28 @@ function guardar(){
 			var tareas = document.createElement('div');
 			var contenidoTexto = document.createElement('p');
 			var insertedElement = divGuardar.insertBefore(tareas, textoTarjeta); //Para insertar elementos antes de textoTarjeta
-			
-			tareas.setAttribute('draggable', 'true');
-
-			function DragDrop(tareas,drop){
-				var drop = document.getElementById(drop);
-				var drag = document.getElementById(drag);
-
-				drag.ondragstart = function(e){
-					e.dataTransfer.setData('contenido', e.target.id);
-				}
-				drop.ondragover = function(e){
-					e.preventDefault();
-				}
-				drop.ondrop = function(e){
-					var id = e.dataTransfer.getData('contenido');
-					e.target.appendChild(document.getElementById(id));
-				}
-			}
-			window.onload = function(){
-				DragDrop('tareas','divGuardar');
-			}
-
-
-			
 			tareas.className = 'fnd-3';
 			contenidoTexto.innerHTML = textoTarjeta.value;
 			tareas.appendChild(contenidoTexto);
-		
+			// EVENTOS DE MOVIMIENTO
+			tar++;
+			tareas.setAttribute('id', 'drag'+tar);
+			tareas.setAttribute('draggable', 'true');
+			tareas.ondragstart = function(e){
+				// Guarda el id de tareas para transferirlo a divGuardar
+				// content permite accedet al valor asignado (tareas)
+				e.dataTransfer.setData('content', e.target.id);
+			}
+			divGuardar.ondragover = function(e){
+				e.preventDefault();
+			}
+			divGuardar.ondrop = function(e){
+				// Se obtiene datos a travez de content, el valor de id
+				var id = e.dataTransfer.getData('content');
+				e.target.insertBefore(document.getElementById(id), e.target.childNodes[1]);
+			}
 			textoTarjeta.value = '';
+			textoTarjeta.focus();
 		}
 	}
 	tituloLista.value = '';	
