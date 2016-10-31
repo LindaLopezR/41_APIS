@@ -2,7 +2,6 @@ var inicio = document.getElementById('inicio');
 var lista = document.getElementById('lista');
 var btnPrincipal = document.getElementById('btnPrincipal');
 var tar = 0;
-// VARIABLES CREADAS
 var divLista = document.createElement('div');
 var tituloLista = document.createElement('input');
 var btnFormulario = document.createElement('button');
@@ -11,10 +10,10 @@ btnPrincipal.addEventListener('click', desplegar);
 // FUNCIONES
 function desplegar(){
 	inicio.replaceChild(divLista, btnPrincipal);
-	divLista.setAttribute('class','fnd-2 mar-3');
+	divLista.setAttribute('class','fnd-2 mar-3 text-center');
 	divLista.appendChild(tituloLista);
 	tituloLista.setAttribute('placeholder', 'Añadir una lista');
-	tituloLista.className = 'tamano2';
+	tituloLista.setAttribute('class', 'tamano2 text-center');
 	divLista.appendChild(btnFormulario);
 	divLista.appendChild(tache);
 	tache.setAttribute('class','glyphicon glyphicon-remove');
@@ -38,20 +37,22 @@ function guardar(){
 	lista.appendChild(divGuardar);
 	divGuardar.setAttribute('class', 'fnd-1 col-xs-2');
 	tituloTareas.innerHTML = tituloLista.value;
+	tituloTareas.className = 'c-white'
 	divGuardar.appendChild(tituloTareas);
 	divGuardar.appendChild(contenidoTarjeta);
 	contenidoTarjeta.setAttribute('placeholder', 'Añadir una tarjeta');
 	contenidoTarjeta.className = 'tamano1';
 	contenidoTarjeta.onclick = function tarjetas(){
-		var btnTarjeta = document.createElement('button');
 		var divTarjeta = document.createElement('div');
+		var btnTarjeta = document.createElement('button');
 		var textoTarjeta = document.createElement('textarea');
+		btnTarjeta.setAttribute('class','btn btn-primary btn-xs');
 		divGuardar.setAttribute('id', 'drop');
 		textoTarjeta.className = 'tamano3';
-		divGuardar.replaceChild(textoTarjeta,contenidoTarjeta);
-		divGuardar.appendChild(textoTarjeta);
-		divGuardar.appendChild(btnTarjeta);
-		btnTarjeta.setAttribute('class','btn btn-primary btn-xs');
+		divGuardar.replaceChild(divTarjeta,contenidoTarjeta);
+		divGuardar.appendChild(divTarjeta);
+		divTarjeta.appendChild(textoTarjeta);
+		divTarjeta.appendChild(btnTarjeta);
 		btnTarjeta.appendChild(document.createTextNode('Aceptar'));
 		textoTarjeta.focus();
 		btnTarjeta.onclick = function guardarTarjeta(){
@@ -61,26 +62,30 @@ function guardar(){
 			}
 			var tareas = document.createElement('div');
 			var contenidoTexto = document.createElement('p');
-			var insertedElement = divGuardar.insertBefore(tareas, textoTarjeta); //Para insertar elementos antes de textoTarjeta
+			var insertedElement = divGuardar.insertBefore(tareas, divTarjeta); //Para insertar elementos antes de textoTarjeta
 			tareas.className = 'fnd-3';
 			contenidoTexto.innerHTML = textoTarjeta.value;
 			tareas.appendChild(contenidoTexto);
+			divGuardar.replaceChild(contenidoTarjeta,divTarjeta);
 			// EVENTOS DE MOVIMIENTO
 			tar++;
 			tareas.setAttribute('id', 'drag'+tar);
 			tareas.setAttribute('draggable', 'true');
 			tareas.ondragstart = function(e){
-				// Guarda el id de tareas para transferirlo a divGuardar
-				// content permite accedet al valor asignado (tareas)
-				e.dataTransfer.setData('content', e.target.id);
+				e.dataTransfer.setData('text', this.id); // Guarda el id de tareas para transferirlo a divGuardar
 			}
 			divGuardar.ondragover = function(e){
 				e.preventDefault();
 			}
 			divGuardar.ondrop = function(e){
-				// Se obtiene datos a travez de content, el valor de id
-				var id = e.dataTransfer.getData('content');
-				e.target.insertBefore(document.getElementById(id), e.target.childNodes[1]);
+				var id = e.dataTransfer.getData('text'); // Se obtiene datos a travez de content, el valor de id
+				this.insertBefore(document.getElementById(id),this.childNodes[1]);	
+			}
+			divGuardar.ondragenter = function(e){
+				divGuardar.style.background='#900C3F';
+			}
+			divGuardar.ondragleave = function(e){
+				divGuardar.style.background = '#738AA0';
 			}
 			textoTarjeta.value = '';
 			textoTarjeta.focus();
